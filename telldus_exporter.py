@@ -20,7 +20,7 @@ API_URL="https://api.telldus.com"
 
 telldus_sensor_temperature = Gauge('telldus_sensor_temperature', 'Sensor data', ['id', 'name', 'location'])
 telldus_sensor_humidity = Gauge('telldus_sensor_humidity', 'Sensor data', ['id', 'name', 'location'])
-telldus_sensor_power_kwh_total = Counter('telldus_sensor_power_kwh_total', 'Sensor data', ['id', 'name', 'location'])
+telldus_sensor_power_kwh_total = Gauge('telldus_sensor_power_kwh_total', 'Sensor data', ['id', 'name', 'location'])
 telldus_sensor_power_watt = Gauge('telldus_sensor_power_watt', 'Sensor data', ['id', 'name', 'location']) 
 telldus_sensor_power_volt = Gauge('telldus_sensor_power_volt', 'Sensor data', ['id', 'name', 'location']) 
 telldus_sensor_power_amp = Gauge('telldus_sensor_power_amp', 'Sensor data', ['id', 'name', 'location']) 
@@ -65,7 +65,7 @@ class TelldusMetricsHandler(MetricsHandler):
                 if "humidity" == data['name']:
                     telldus_sensor_humidity.labels(sensor['id'],sensor['name'],sensor['clientName']).set(data['value'])
                 if "watt" == data['name'] and "kWh" == data['unit']:
-                    telldus_sensor_power_kwh_total.labels(sensor['id'],sensor['name'],sensor['clientName']).inc(float(data['value']))
+                    telldus_sensor_power_kwh_total.labels(sensor['id'],sensor['name'],sensor['clientName']).set(data['value'])
                 if "watt" == data['name'] and "W" == data['unit']:
                     telldus_sensor_power_watt.labels(sensor['id'],sensor['name'],sensor['clientName']).set(data['value'])
                 if "watt" == data['name'] and "V" == data['unit']:
